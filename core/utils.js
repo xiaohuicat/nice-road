@@ -164,7 +164,7 @@ function safeRunCallback(callback, ...args) {
  */
 async function redisEasy(callback) {
   const redis = new Redis();
-  await safeRunCallback(callback, redis)
+  await safeRunCallback(callback, redis);
   redis.quit();
 }
 

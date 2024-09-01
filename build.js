@@ -7,7 +7,7 @@ build({
   outfile: './dist/nice-road.js',
   bundle: true,
   platform: 'node',
-  minify: true,                     // 压缩代码
+  // minify: true,                     // 压缩代码
   external: ['http', 'fs', 'path'], // 列出核心模块
   plugins: [
     nodeExternalsPlugin(),

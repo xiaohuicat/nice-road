@@ -2,22 +2,22 @@ const { User } = require('../model/user');
 
 // 获取头像
 async function getUserAvatar(req, res) {
-  res.sendFile("C:/Users/*************/avatar.jpg");
+  res.sendFile('C:/Users/*************/avatar.jpg');
 }
 
 // 获取用户信息
 async function getUserList(req, res) {
   try {
     const data = await User.findAll({
-      attributes: ['id', 'user_id', 'name', 'gender', 'email'],
+      attributes: ['id', 'user_id', 'name', 'gender', 'email']
     });
-    res.send({status: true, data});
+    res.send({ status: true, data });
   } catch (err) {
-    res.send({status: false, msg: err.message});
+    res.send({ status: false, msg: err.message });
   }
 }
 
 module.exports = {
   getUserAvatar,
-  getUserList,
+  getUserList
 };

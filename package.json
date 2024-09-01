@@ -1,15 +1,32 @@
 {
   "name": "nice-road",
   "version": "0.0.1",
+  "description": "create a simple server",
   "main": "dist/nice-road.js",
-  "author": "xiaohuicat",
-  "license": "MIT",
   "scripts": {
     "dev": "node main.js",
     "build": "node build.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/ setting.js cluster.js main.js"
+    "format": "prettier --write src/ setting.js main.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaohuicat/nice-road.git"
+  },
+  "keywords": [
+    "server",
+    "nodejs",
+    "framework",
+    "http",
+    "web",
+    "api"
+  ],
+  "author": "xiaohuicat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiaohuicat/nice-road/issues"
+  },
+  "homepage": "https://github.com/xiaohuicat/nice-road#readme",
   "dependencies": {
     "crypto-js": "^4.2.0",
     "fs": "^0.0.1-security",
