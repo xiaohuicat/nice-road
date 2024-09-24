@@ -22,21 +22,21 @@ class Router {
       if (!status) {
         res.send({ status: true, msg });
       }
+
       return;
     }
 
     // 验证规则
     let ret = await rule(this.rules);
-    if (ret?.status) {
-      req.ruleResult = ret;
-      const {status, msg} = await safeRunCallback(this.callback, req, res);
-      if (!status) {
-        res.send({ status: true, msg });
-      }
+    if (ret?.fail) {
+      res.send({ status: false, msg: ret?.msg || 'verify error'});
       return;
-    } else {
-      res.send({ status: false, msg: ret?.message || 'verify error'});
-      return;
+    }
+
+    req.ruleResult = ret;
+    const {status, msg} = await safeRunCallback(this.callback, req, res);
+    if (!status) {
+      res.send({ status: true, msg });
     }
   }
 }

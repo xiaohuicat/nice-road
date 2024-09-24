@@ -41,7 +41,7 @@ async function handleMiddleware(req, res, middlewareList) {
  * @param {String} method
  * @param {Object} setting
  */
-const ruleCaller = (rule, method, setting) => {
+const ruleCaller = (rule, token, method, setting) => {
   // 如果存在私钥路径，则读取私钥
   let rsa_private_pem;
   if (setting?.rsa_private_path && fs.existsSync(setting.rsa_private_path)) {
@@ -49,7 +49,7 @@ const ruleCaller = (rule, method, setting) => {
   }
 
   const {jwt_key} = setting;
-  return (rules) => rule(rules, {method, jwt_key, rsa_private_pem});
+  return rules => rule(rules, {token, method, jwt_key, rsa_private_pem});
 };
 
 /**
@@ -123,7 +123,7 @@ class NiceRoad {
     }
 
     // 分发到对应的路由
-    this.routers[index]?.run?.(req, res, ruleCaller(this?.rule, req?.getMethod(), this?.setting));
+    this.routers[index]?.run?.(req, res, ruleCaller(this?.rule, req?.headers?.authorization ,req?.getMethod(), this?.setting));
   };
 
   reqBinds(tools) {

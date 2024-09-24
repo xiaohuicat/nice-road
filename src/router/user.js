@@ -5,7 +5,7 @@ const users = require('../pages/users');
 const rules = null;
 const urls = [
   npath('/getUserAvatar', users.getUserAvatar, ['GET']),
-  npath('/getUserList', users.getUserList, ['GET'])
+  npath('/getUserList', users.getUserList, ['no', 'POST', 'user'])
 ];
 
 module.exports = {

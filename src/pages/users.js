@@ -2,7 +2,7 @@ const { User } = require('../model/user');
 
 // 获取头像
 async function getUserAvatar(req, res) {
-  res.sendFile('C:/Users/*************/avatar.jpg');
+  res.sendFile('C:\\Users\\***********\\avatar.jpg');
 }
 
 // 获取用户信息

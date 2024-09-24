@@ -15,7 +15,18 @@ function isObject(obj) {
  * @param {String} filePath
  */
 function isFile(filePath) {
-  return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+  try {
+    // 先检查路径是否存在
+    if (fs.existsSync(filePath)) {
+      // 获取文件状态，并检查是否为文件
+      return fs.statSync(filePath).isFile();
+    }
+    // 如果路径不存在，返回 false
+    return false;
+  } catch (error) {
+    console.error('Error checking file:', error);
+    return false;
+  }
 }
 
 /**

@@ -13,6 +13,8 @@ const tools = {
   Token,
 };
 
+const {rule, ruleBreak, ruleNext, multipleValidate} = require('./rule');
+
 const crypt = require('./crypt');
 
 module.exports = {
@@ -27,4 +29,8 @@ module.exports = {
   createStaticPath,
   createSequelize,
   Sequelize,
+  rule,
+  ruleBreak,
+  ruleNext,
+  multipleValidate,
 };

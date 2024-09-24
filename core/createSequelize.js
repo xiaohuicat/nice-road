@@ -4,18 +4,18 @@ let sequelize;
 
 /**
  * 创建sequelize
- * @param {Object} mysql_config
+ * @param {Object} 配置参数
  */
-function createSequelize(mysql_config){
+function createSequelize({database, username, password, host, port, timezone}){
   if (sequelize) {
     return sequelize;
   }
   
-  sequelize =  new Sequelize(mysql_config.database, mysql_config.username, mysql_config.password, {
-    host: mysql_config.host,
-    port: mysql_config.port,
+  sequelize =  new Sequelize(database, username, password, {
+    host,
+    port,
     dialect: 'mysql',
-    timezone: mysql_config.timezone,
+    timezone,
     pool: {
       max: 5,
       min: 0,

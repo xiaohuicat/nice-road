@@ -50,8 +50,8 @@ function sendStreamFile(filePath, statusCode = 200) {
   let stream = fs.createReadStream(filePath);
   stream.on('error', function () {
     //错误处理
-    response.writeHead(404, { 'Content-Type': 'text/html' });
-    response.end('<body type="font-size:32px;color:purple;">error 404</body>');
+    response.writeHead(500, { 'Content-Type': 'text/html' });
+    response.end('<body type="font-size:32px;color:purple;">error 500</body>');
     return false;
   });
   stream.on('close', () => {
