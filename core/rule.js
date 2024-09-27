@@ -105,7 +105,7 @@ function rsaVerify(token, rsa_private_pem) {
  * @param {String} jwt_key
  */
 function jwtVerify(token, jwt_key = 'jwt') {
-  let result = Token(jwt_key).decrypt(token, 'utf8');
+  let result = new Token(jwt_key).decrypt(token, 'utf8');
   if (!result.status) {
     return ruleBreak('jwt解密失败');
   }
