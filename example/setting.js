@@ -1,4 +1,4 @@
-const { createStaticPath } = require('./core');
+const { createStaticPath } = require('nice-road');
 
 const __DEV__ = true; //是否为开发环境
 const verison = '0.0.1';

@@ -98,8 +98,14 @@ class NiceRoad {
     }
     // 获取路由参数
     this.routers = await getRouters(routerPath);
-    this.urls = this.routers.map((each) => {
-      return each.url == '/' ? '/' : each.url.endsWith('/') ? each.url : each.url + '/';
+    this.urls = [];
+    this.routers.forEach(each => {
+      if (!each) {
+        return;
+      }
+
+      const url = each.url === '/' ? '/' : each.url.endsWith('/') ? each.url : each.url + '/';
+      this.urls.push(url);
     });
   };
 

@@ -114,7 +114,7 @@ function jwtVerify(token, jwt_key = 'jwt') {
 }
 
 //登录验证，返回json
-function useRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
+function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
   const {fail, params, msg} = multipleValidate([
     [!token, 'token为空'],
     () => {
@@ -148,11 +148,12 @@ function rule(rules, {token, method, jwt_key, rsa_private_pem}) {
     () => {
       let result;
       if (rules.includes('user') || rules.includes('admin')) {
-        const {fail, params, msg} = useRSAVerify(token, jwt_key, rsa_private_pem);
-        result = params;
+        const {fail, params, msg} = userRSAVerify(token, jwt_key, rsa_private_pem);
         if (fail) {
           return ruleBreak(msg);
         }
+        
+        result = params;
       }
 
       if (rules.includes('admin') && result?.role !== '管理员') {
@@ -170,5 +171,5 @@ module.exports = {
   ruleNext,
   ruleBreak,
   jwtVerify,
-  useRSAVerify,
+  userRSAVerify,
 };

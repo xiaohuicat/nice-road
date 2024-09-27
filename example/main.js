@@ -1,8 +1,10 @@
 const setting = require('./setting');
-const { NiceRoad, multipleValidate, ruleBreak, ruleNext } = require('./core');
+const { NiceRoad, multipleValidate, ruleBreak, ruleNext } = require('nice-road');
 const road = new NiceRoad(setting);
+// 设置规则，不设置也存在默认的规则
 road.setRule(rule);
-road.initRouter('./src/router');
+// 自动读取router文件夹下的所有文件
+road.initRouter('./example/router');
 road.run(8080);
 
 /**

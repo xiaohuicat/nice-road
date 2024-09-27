@@ -79,9 +79,12 @@ const getRouters = async (routerPath) => {
           throw console.error('没有找到urls，请在文件中使用module.exports暴露urls');
         }
 
-        urls.forEach((e) => {
-          // 如果有全局规则，没有具体规则，给每个加上全局规则
-          if (rules && !e.rules) {
+        urls.forEach(e => {
+          if (!e) {
+            return;
+          }
+
+          if (rules && !e?.rules) {
             e.rules = rules;
           }
 

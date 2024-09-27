@@ -20,7 +20,7 @@ class Router {
     if (!this.rules) {
       const {status, msg} = await safeRunCallback(this.callback, req, res);
       if (!status) {
-        res.send({ status: true, msg });
+        res.send({status: false, msg});
       }
 
       return;
@@ -36,7 +36,7 @@ class Router {
     req.ruleResult = ret;
     const {status, msg} = await safeRunCallback(this.callback, req, res);
     if (!status) {
-      res.send({ status: true, msg });
+      res.send({status: false, msg});
     }
   }
 }

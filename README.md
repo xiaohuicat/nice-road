@@ -7,8 +7,9 @@ npm install nice-road
 your-project
 1. main.js
 2. setting.js
+3. src/router
 
-main.js
+### main.js
 ```javascript
 const setting = require('./setting');
 const { NiceRoad, multipleValidate, ruleBreak, ruleNext } = require('nice-road');
@@ -38,7 +39,7 @@ function rule(rules, option) {
 }
 
 ```
-setting.js
+### setting.js
 ```javascript
 const { createStaticPath } = require("nice-road");
 //配置静态资源路径
@@ -47,7 +48,7 @@ const staticPath = createStaticPath('E://static');
 //配置链接数据库参数
 const mysql_config = {
   host: '127.0.0.1',
-  port: 1746,              //端口号
+  port: 3360,              //端口号
   database: 'database',    //数据库名
   username: 'root',        //数据库用户名
   password: '***********', //数据库密码
@@ -58,5 +59,39 @@ module.exports = {
   mysql_config,
   verison,
   staticPath,
+};
+```
+
+### router文件夹 src/router/***.js
+```javascript
+/**
+ * router文件夹下面可以创建多个文件，每个文件按如下格式编写
+ * 引入npath函数创建路由
+ * @returns {urls: Array, rules: Array}
+ * */
+
+const { npath } = require('nice-road');
+
+function getUserAvatar(req, res) {
+  res.sendFile('C:/Users/admin/Desktop/avatar.jpg');
+}
+
+function getUserList(req, res) {
+  res.send('your can get userList');
+}
+
+// 全局规则
+const rules = ['GET'];
+// 路由配置
+const urls = [
+  // 不设置规则，则使用全局规则
+  npath('/getUserAvatar', getUserAvatar),
+  // 使用设置的规则
+  npath('/getUserList', getUserList, ['POST', 'user'])
+];
+
+module.exports = {
+  urls,
+  rules
 };
 ```

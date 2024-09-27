@@ -1,8 +1,8 @@
 {
   "name": "nice-road",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "create a simple server",
-  "main": "dist/nice-road.js",
+  "main": "core/index.js",
   "scripts": {
     "dev": "node main.js",
     "build": "node build.js",

@@ -1,4 +1,4 @@
-const { createSequelize, Sequelize } = require('../../core/index');
+const { createSequelize, Sequelize } = require('nice-road');
 const { mysql_config } = require('../../setting');
 
 //用户模型

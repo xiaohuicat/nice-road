@@ -1,4 +1,4 @@
-const { User } = require('../model/user');
+const { User } = require('../model/User');
 
 // 获取头像
 async function getUserAvatar(req, res) {
