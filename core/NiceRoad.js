@@ -6,7 +6,8 @@ const { isObject, getRouters, addProperty, safeRunCallback } = require('./utils'
 const { getReqUrl, send } = require('./tools/index');
 const reqTools = require('./tools/reqTools');
 const resTools = require('./tools/resTools');
-const {rule} = require('./rule');
+const { rule } = require('./rule');
+const { applySetting } = require('./setting');
 
 /**
  * 处理中间件
@@ -17,12 +18,12 @@ const {rule} = require('./rule');
 async function handleMiddleware(req, res, middlewareList) {
   let isPassMiddleware = true;
   for (const each of middlewareList) {
-    const {status, msg, data} = await safeRunCallback(each, req, res);
+    const { status, msg, data } = await safeRunCallback(each, req, res);
     // 运行中间件出错
     if (!status) {
       isPassMiddleware = false;
       console.error('运行中间件出错：', msg);
-      res.send({status: false, msg: 'middleware error'});
+      res.send({ status: false, msg: 'middleware error' });
       break;
     }
     // 如果中间件不通过
@@ -36,34 +37,17 @@ async function handleMiddleware(req, res, middlewareList) {
 }
 
 /**
- * 规则调用器
- * @param {Function} rule
- * @param {String} method
- * @param {Object} setting
- */
-const ruleCaller = (rule, token, method, setting) => {
-  // 如果存在私钥路径，则读取私钥
-  let rsa_private_pem;
-  if (setting?.rsa_private_path && fs.existsSync(setting.rsa_private_path)) {
-    rsa_private_pem = fs.readFileSync(setting.rsa_private_path);
-  }
-
-  const {jwt_key} = setting;
-  return rules => rule(rules, {token, method, jwt_key, rsa_private_pem});
-};
-
-/**
  * 入口类
  */
 class NiceRoad {
   constructor(setting) {
-    this.setting = setting;
-    this.routers = [];                 // 路由列表
-    this.urls = [];                    // 路径列表
+    this.routers = []; // 路由列表
+    this.urls = []; // 路径列表
     this.rule = rule;
-    this.reqBindsDict = {...reqTools};
-    this.resBindsDict = {...resTools};
+    this.reqBindsDict = { ...reqTools };
+    this.resBindsDict = { ...resTools };
     this.middlewareList = [];
+    setting && applySetting(setting);
   }
 
   addMiddleware(middleware) {
@@ -73,7 +57,7 @@ class NiceRoad {
     }
 
     return false;
-  };
+  }
 
   setRule(rule) {
     if (typeof rule === 'function') {
@@ -82,7 +66,7 @@ class NiceRoad {
     }
 
     return false;
-  };
+  }
 
   initRouter = async (routerPath) => {
     if (!routerPath) {
@@ -99,7 +83,7 @@ class NiceRoad {
     // 获取路由参数
     this.routers = await getRouters(routerPath);
     this.urls = [];
-    this.routers.forEach(each => {
+    this.routers.forEach((each) => {
       if (!each) {
         return;
       }
@@ -116,10 +100,10 @@ class NiceRoad {
     let index = this.urls.indexOf(reqUrl);
     if (index == -1) {
       res.send = send;
-      res.send({status: false, msg: 'url not found'});
+      res.send({ status: false, msg: 'url not found' });
       return;
     }
-    
+
     addProperty(req, this.reqBindsDict);
     addProperty(res, this.resBindsDict);
 
@@ -129,7 +113,7 @@ class NiceRoad {
     }
 
     // 分发到对应的路由
-    this.routers[index]?.run?.(req, res, ruleCaller(this?.rule, req?.headers?.authorization ,req?.getMethod(), this?.setting));
+    this.routers[index]?.run?.(req, res, this.rule);
   };
 
   reqBinds(tools) {
@@ -162,5 +146,5 @@ class NiceRoad {
 }
 
 module.exports = {
-  NiceRoad,
+  NiceRoad
 };

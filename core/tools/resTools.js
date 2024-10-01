@@ -65,5 +65,5 @@ module.exports = {
   send,
   sendFile: sendStreamFile,
   sendJson,
-  sendStreamFile,
+  sendStreamFile
 };

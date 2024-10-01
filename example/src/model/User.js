@@ -1,8 +1,7 @@
-const { createSequelize, Sequelize } = require('nice-road');
-const { mysql_config } = require('../../setting');
+const { useSequelize, Sequelize } = require('nice-road');
 
 //用户模型
-var User = createSequelize(mysql_config).define(
+var User = useSequelize().define(
   'users',
   {
     id: {

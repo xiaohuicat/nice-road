@@ -41,12 +41,12 @@ function rule(rules, option) {
 ```
 ### setting.js
 ```javascript
-const { createStaticPath } = require("nice-road");
+const { applySetting } = require("nice-road");
 //配置静态资源路径
-const staticPath = createStaticPath('E://static');
+const staticPath = 'E://static';
 
 //配置链接数据库参数
-const mysql_config = {
+const mysqlConfig = {
   host: '127.0.0.1',
   port: 3360,              //端口号
   database: 'database',    //数据库名
@@ -55,11 +55,10 @@ const mysql_config = {
   timezone: '+08:00'       //设置时区
 };
 
-module.exports = {
-  mysql_config,
-  verison,
+applySetting({
   staticPath,
-};
+  mysqlConfig,
+});
 ```
 
 ### router文件夹 src/router/***.js

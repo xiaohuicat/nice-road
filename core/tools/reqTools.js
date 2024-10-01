@@ -3,7 +3,7 @@ const { getContentTypeByPath } = require('../utils');
 
 //挂载到request上，获取post函数的body请求体
 function getBody() {
-  let req = this;
+  const req = this;
   return new Promise((resolve) => {
     let str = '';
     req.on('data', function (data) {
@@ -20,9 +20,14 @@ function getBody() {
   });
 }
 
+function getToken() {
+  const req = this;
+  return req.headers.authorization;
+}
+
 // 获取客户端的ip
 function getClientIp() {
-  let req = this;
+  const req = this;
   return (
     req.headers['x-forwarded-for'] ||
     req?.connection?.remoteAddress ||
@@ -34,7 +39,7 @@ function getClientIp() {
 
 // 获取请求数据类型
 function getContentType() {
-  let req = this;
+  const req = this;
   let url = req.reqUrl;
   if (!url) return 'unknown';
   return getContentTypeByPath(url);
@@ -82,22 +87,23 @@ function getReqUrl() {
 }
 
 function getMethod() {
-  let req = this;
+  const req = this;
   return req.method;
 }
 
 function isMethod(method) {
-  let req = this;
+  const req = this;
   return req.method === method.toUpperCase();
 }
 
 module.exports = {
   getBody,
+  getToken,
   getClientIp,
   getContentType,
   getCookies,
   getQuery,
   getReqUrl,
   getMethod,
-  isMethod,
+  isMethod
 };

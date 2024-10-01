@@ -1,13 +1,13 @@
 {
   "name": "nice-road",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "create a simple server",
   "main": "core/index.js",
   "scripts": {
     "dev": "node main.js",
     "build": "node build.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/ setting.js main.js"
+    "format": "prettier --write core/ example/ --ignore node_modules/"
   },
   "repository": {
     "type": "git",

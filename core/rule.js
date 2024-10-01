@@ -1,12 +1,12 @@
 const { aes_decrypt } = require('./crypt/aes_crypt');
 const { rsa_decrypt } = require('./crypt/rsa_crypt');
-const { Token } = require('./token');
+const { Token } = require('./tools/token');
 
 /**
  * 多条件校验，返回true
  * @param {Array} conditions
  */
-function multipleValidate(conditions) {     
+function multipleValidate(conditions) {
   if (!Array.isArray(conditions)) {
     throw new Error('conditions参数必须为数组');
   }
@@ -15,10 +15,10 @@ function multipleValidate(conditions) {
   let errorMsg = '';
   let innerParams;
 
-  for(let i = 0; i < conditions.length; i++) {
+  for (let i = 0; i < conditions.length; i++) {
     const each = conditions[i];
     if (typeof each === 'function') {
-      const {fail, msg, params} = each(innerParams);
+      const { fail, msg, params } = each(innerParams);
       ret = fail;
       errorMsg = msg;
       innerParams = params;
@@ -35,7 +35,7 @@ function multipleValidate(conditions) {
     }
   }
 
-  return {fail: ret, msg: errorMsg, params: innerParams};
+  return { fail: ret, msg: errorMsg, params: innerParams };
 }
 
 /**
@@ -44,7 +44,7 @@ function multipleValidate(conditions) {
  * @return {fail: false, msg: *}
  */
 function ruleNext(msg, params) {
-  const result = {fail: false};
+  const result = { fail: false };
   if (msg) {
     result.msg = msg;
   }
@@ -63,7 +63,7 @@ function ruleNext(msg, params) {
  * @returns {fail: true, msg: *, params: *}
  */
 function ruleBreak(msg, params) {
-  const result = {fail: true};
+  const result = { fail: true };
   if (msg) {
     result.msg = msg;
   }
@@ -115,17 +115,17 @@ function jwtVerify(token, jwt_key = 'jwt') {
 
 //登录验证，返回json
 function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
-  const {fail, params, msg} = multipleValidate([
+  const { fail, params, msg } = multipleValidate([
     [!token, 'token为空'],
     () => {
       // 如果没有no-rsa加密，默认是token是经过rsa加密的
       if (rsa_private_pem && !token.includes('[no-rsa]')) {
         return rsaVerify(token, rsa_private_pem);
       }
-      
+
       return ruleNext('无需rsa解密', token);
     },
-    getToken => jwtVerify(getToken.replace('[no-rsa]', ''), jwt_key),
+    (getToken) => jwtVerify(getToken.replace('[no-rsa]', ''), jwt_key)
   ]);
 
   if (fail) {
@@ -140,7 +140,7 @@ function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
  * @param {Array} rules
  * @param {Object} param
  */
-function rule(rules, {token, method, jwt_key, rsa_private_pem}) {
+function rule(rules, { token, method, jwt_key, rsa_private_pem }) {
   return multipleValidate([
     [rules === 'no', '无需校验'],
     [rules.includes('get') && method !== 'GET', '请求方法错误'],
@@ -148,11 +148,11 @@ function rule(rules, {token, method, jwt_key, rsa_private_pem}) {
     () => {
       let result;
       if (rules.includes('user') || rules.includes('admin')) {
-        const {fail, params, msg} = userRSAVerify(token, jwt_key, rsa_private_pem);
+        const { fail, params, msg } = userRSAVerify(token, jwt_key, rsa_private_pem);
         if (fail) {
           return ruleBreak(msg);
         }
-        
+
         result = params;
       }
 
@@ -161,7 +161,7 @@ function rule(rules, {token, method, jwt_key, rsa_private_pem}) {
       }
 
       return ruleNext('校验通过', result);
-    },
+    }
   ]);
 }
 
@@ -171,5 +171,5 @@ module.exports = {
   ruleNext,
   ruleBreak,
   jwtVerify,
-  userRSAVerify,
+  userRSAVerify
 };

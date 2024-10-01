@@ -79,7 +79,7 @@ const getRouters = async (routerPath) => {
           throw console.error('没有找到urls，请在文件中使用module.exports暴露urls');
         }
 
-        urls.forEach(e => {
+        urls.forEach((e) => {
           if (!e) {
             return;
           }
@@ -143,7 +143,10 @@ function isAsyncFunction(func) {
  * @param {Object} obj
  */
 function isPromise(obj) {
-  return obj instanceof Promise || (obj !== null && typeof obj === 'object' && typeof obj.then === 'function');
+  return (
+    obj instanceof Promise ||
+    (obj !== null && typeof obj === 'object' && typeof obj.then === 'function')
+  );
 }
 
 /**
@@ -152,15 +155,15 @@ function isPromise(obj) {
  * @param {Object} res
  */
 function safeRunCallback(callback, ...args) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     if (isPromise(callback) || isAsyncFunction(callback)) {
       callback(...args)
-      .then(res => {
-        resolve({ status: true, data: res});
-      })
-      .catch(error => {
-        resolve({ status: false, msg: error?.message || error });
-      });
+        .then((res) => {
+          resolve({ status: true, data: res });
+        })
+        .catch((error) => {
+          resolve({ status: false, msg: error?.message || error });
+        });
     } else {
       try {
         const res = callback(...args);
@@ -190,5 +193,5 @@ module.exports = {
   getRouters,
   getContentTypeByPath,
   safeRunCallback,
-  redisEasy,
+  redisEasy
 };

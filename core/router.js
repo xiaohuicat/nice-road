@@ -1,4 +1,5 @@
-const { safeRunCallback } = require("./utils");
+const { getSetting } = require('./setting');
+const { safeRunCallback } = require('./utils');
 
 /**
  * 路由类
@@ -18,25 +19,32 @@ class Router {
 
     // 没有校验规则
     if (!this.rules) {
-      const {status, msg} = await safeRunCallback(this.callback, req, res);
+      const { status, msg } = await safeRunCallback(this.callback, req, res);
       if (!status) {
-        res.send({status: false, msg});
+        res.send({ status: false, msg });
       }
 
       return;
     }
 
+    const setting = getSetting();
     // 验证规则
-    let ret = await rule(this.rules);
+    const option = {
+      token: req.getToken(),
+      method: req.getMethod(),
+      jwt_key: setting?.JWT_KEY,
+      rsa_private_pem: setting?.RSA_PRIVATE_PEM
+    };
+    let ret = await rule(this.rules, option);
     if (ret?.fail) {
-      res.send({ status: false, msg: ret?.msg || 'verify error'});
+      res.send({ status: false, msg: ret?.msg || 'verify error' });
       return;
     }
 
     req.ruleResult = ret;
-    const {status, msg} = await safeRunCallback(this.callback, req, res);
+    const { status, msg } = await safeRunCallback(this.callback, req, res);
     if (!status) {
-      res.send({status: false, msg});
+      res.send({ status: false, msg });
     }
   }
 }
@@ -59,5 +67,5 @@ function npath(url, callback, rules) {
 
 module.exports = {
   npath,
-  Router,
+  Router
 };

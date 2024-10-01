@@ -8,7 +8,7 @@ const {
   isMethod
 } = require('./reqTools');
 
-const { send, sendJson, sendFile, sendStreamFile} = require('./resTools');
+const { send, sendJson, sendFile, sendStreamFile } = require('./resTools');
 
 const { redisEasy } = require('../utils');
 
@@ -24,5 +24,5 @@ module.exports = {
   sendJson,
   sendFile,
   sendStreamFile,
-  redisEasy,
+  redisEasy
 };
