@@ -8,6 +8,7 @@ const { isObject, isFile, getContentTypeByPath } = require('../utils');
 function send(data) {
   let response = this;
   let contentType;
+
   if (isObject(data)) {
     data = JSON.stringify(data);
     contentType = 'application/json';
@@ -15,10 +16,11 @@ function send(data) {
     contentType = 'text/plain';
   }
 
-  response.writeHead(200, { 'Content-Type': contentType });
+  response.writeHead(200, { 'Content-Type': `${contentType}` });
   response.end(data);
   return true;
 }
+
 
 /**
  * 发送json数据
