@@ -142,12 +142,12 @@ function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
  */
 function rule(rules, { token, method, jwt_key, rsa_private_pem }) {
   return multipleValidate([
-    [rules === 'no', '无需校验'],
-    [rules.includes('get') && method !== 'GET', '请求方法错误'],
-    [rules.includes('post') && method !== 'POST', '请求方法错误'],
+    [rules === 'NO', '无需校验'],
+    [rules.includes('GET') && method !== 'GET', '请求方法错误'],
+    [rules.includes('POST') && method !== 'POST', '请求方法错误'],
     () => {
       let result;
-      if (rules.includes('user') || rules.includes('admin')) {
+      if (rules.includes('USER') || rules.includes('ADMIN')) {
         const { fail, params, msg } = userRSAVerify(token, jwt_key, rsa_private_pem);
         if (fail) {
           return ruleBreak(msg);
@@ -156,7 +156,7 @@ function rule(rules, { token, method, jwt_key, rsa_private_pem }) {
         result = params;
       }
 
-      if (rules.includes('admin') && result?.role !== '管理员') {
+      if (rules.includes('ADMIN') && result?.role !== '管理员') {
         return ruleBreak('无访问权限');
       }
 
