@@ -96,8 +96,8 @@ function applySetting(setting) {
     SETTING[key] = static_config[key];
   }
 
-  if (SETTING?.RSA_PRIVATE_PATH && fs.existsSync(SETTING?.RSA_PRIVATE_PATH)) {
-    SETTING.RSA_PRIVATE_PEM = fs.readFileSync(SETTING?.RSA_PRIVATE_PATH);
+  if (SETTING?.PRIVATE_PEM_PATH && fs.existsSync(SETTING?.PRIVATE_PEM_PATH)) {
+    SETTING.PRIVATE_PEM = fs.readFileSync(SETTING?.PRIVATE_PEM_PATH);
   }
 
   return SETTING;
