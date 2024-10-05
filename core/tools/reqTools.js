@@ -96,6 +96,16 @@ function isMethod(method) {
   return req.method === method.toUpperCase();
 }
 
+function getUser(key) {
+  const req = this;
+  const user = req?.ruleResult?.params ?? {};
+  if (!key) {
+    return user;
+  } else {
+    return user?.[key];
+  }
+}
+
 module.exports = {
   getBody,
   getToken,
@@ -105,5 +115,6 @@ module.exports = {
   getQuery,
   getReqUrl,
   getMethod,
-  isMethod
+  isMethod,
+  getUser,
 };

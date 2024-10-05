@@ -1,6 +1,7 @@
 const { aes_decrypt } = require('./crypt/aes_crypt');
 const { rsa_decrypt } = require('./crypt/rsa_crypt');
 const { Token } = require('./tools/token');
+const { isPromise, isAsyncFunction } = require('./utils');
 
 /**
  * 多条件校验，返回true
@@ -19,6 +20,47 @@ function multipleValidate(conditions) {
     const each = conditions[i];
     if (typeof each === 'function') {
       const { fail, msg, params } = each(innerParams);
+      ret = fail;
+      errorMsg = msg;
+      innerParams = params;
+    } else if (Array.isArray(each) && each.length === 2) {
+      ret = each[0];
+      errorMsg = each[1];
+    } else {
+      ret = each?.fail;
+      errorMsg = each?.msg;
+    }
+
+    if (ret) {
+      break;
+    }
+  }
+
+  return { fail: ret, msg: errorMsg, params: innerParams };
+}
+
+/**
+ * 多条件校验，返回true
+ * @param {Array} conditions
+ */
+async function asyncMultipleValidate(conditions) {
+  if (!Array.isArray(conditions)) {
+    throw new Error('conditions参数必须为数组');
+  }
+
+  let ret = false;
+  let errorMsg = '';
+  let innerParams;
+
+  for (let i = 0; i < conditions.length; i++) {
+    const each = conditions[i];
+    if (typeof each === 'function') {
+      const { fail, msg, params } = isAsyncFunction(each) ? await each(innerParams) : each(innerParams);
+      ret = fail;
+      errorMsg = msg;
+      innerParams = params;
+    } else if (isPromise(each)) {
+      const { fail, msg, params } = await each(innerParams);
       ret = fail;
       errorMsg = msg;
       innerParams = params;
@@ -168,6 +210,7 @@ function rule(rules, { token, method, jwt_key, rsa_private_pem }) {
 module.exports = {
   rule,
   multipleValidate,
+  asyncMultipleValidate,
   ruleNext,
   ruleBreak,
   jwtVerify,

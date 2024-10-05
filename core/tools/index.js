@@ -5,7 +5,8 @@ const {
   getCookies,
   getQuery,
   getReqUrl,
-  isMethod
+  isMethod,
+  getUser,
 } = require('./reqTools');
 
 const { send, sendJson, sendFile, sendStreamFile } = require('./resTools');
@@ -20,6 +21,7 @@ module.exports = {
   getQuery,
   getReqUrl,
   isMethod,
+  getUser,
   send,
   sendJson,
   sendFile,

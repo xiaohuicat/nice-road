@@ -188,6 +188,8 @@ async function redisEasy(callback) {
 module.exports = {
   isObject,
   isFile,
+  isPromise,
+  isAsyncFunction,
   addProperty,
   readFile,
   getRouters,

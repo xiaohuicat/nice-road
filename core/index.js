@@ -12,7 +12,7 @@ const tools = {
   Token
 };
 
-const { rule, ruleBreak, ruleNext, multipleValidate } = require('./rule');
+const { rule, ruleBreak, ruleNext, multipleValidate, asyncMultipleValidate } = require('./rule');
 const crypt = require('./crypt');
 const { applySetting, getSetting } = require('./setting');
 
@@ -35,5 +35,6 @@ module.exports = {
   rule,
   ruleBreak,
   ruleNext,
-  multipleValidate
+  multipleValidate,
+  asyncMultipleValidate,
 };
