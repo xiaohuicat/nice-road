@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const { isObject } = require('./utils');
 
 // 配置文件对象
