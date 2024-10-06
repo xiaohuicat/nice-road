@@ -9,7 +9,7 @@ const utils = require('./utils');
 const Token = require('./tools/token');
 const tools = {
   ...utils,
-  Token
+  Token,
 };
 
 const { rule, ruleBreak, ruleNext, multipleValidate, asyncMultipleValidate } = require('./rule');

@@ -1,7 +1,7 @@
 const { aes_decrypt } = require('./crypt/aes_crypt');
 const { rsa_decrypt } = require('./crypt/rsa_crypt');
 const { Token } = require('./tools/token');
-const { isPromise, isAsyncFunction } = require('./utils');
+const { isPromise, isAsyncFunction, isNull } = require('./utils');
 
 /**
  * 多条件校验，返回true
@@ -87,11 +87,11 @@ async function asyncMultipleValidate(conditions) {
  */
 function ruleNext(msg, params) {
   const result = { fail: false };
-  if (msg) {
+  if (!isNull(msg)) {
     result.msg = msg;
   }
 
-  if (params) {
+  if (!isNull(params)) {
     result.params = params;
   }
 
@@ -106,11 +106,11 @@ function ruleNext(msg, params) {
  */
 function ruleBreak(msg, params) {
   const result = { fail: true };
-  if (msg) {
+  if (!isNull(msg)) {
     result.msg = msg;
   }
 
-  if (params) {
+  if (!isNull(params)) {
     result.params = params;
   }
 
@@ -167,7 +167,7 @@ function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
 
       return ruleNext('无需rsa解密', token);
     },
-    (getToken) => jwtVerify(getToken.replace('[no-rsa]', ''), jwt_key)
+    getToken => jwtVerify(getToken.replace('[no-rsa]', ''), jwt_key)
   ]);
 
   if (fail) {

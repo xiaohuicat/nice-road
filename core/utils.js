@@ -2,6 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const Redis = require('ioredis');
 
+function isNull(obj) {
+  return obj === null || obj === undefined;
+}
+
 /**
  * 判断是否是对象
  * @param {Object} obj
@@ -186,6 +190,7 @@ async function redisEasy(callback) {
 }
 
 module.exports = {
+  isNull,
   isObject,
   isFile,
   isPromise,
