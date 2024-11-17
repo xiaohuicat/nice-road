@@ -33,7 +33,7 @@ class Router {
       token: req.getToken(),
       method: req.getMethod(),
       jwt_key: setting?.JWT_KEY,
-      rsa_private_pem: setting?.RSA_PRIVATE_PEM
+      rsa_private_pem: setting?.PRIVATE_PEM,
     };
     let ret = await rule(this.rules, option);
     if (ret?.fail) {

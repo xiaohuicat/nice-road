@@ -1,7 +1,10 @@
 const url = require('url');
 const { getContentTypeByPath } = require('../utils');
 
-//挂载到request上，获取post函数的body请求体
+/**
+ * 挂载到request上，获取post函数的body请求体
+ * @returns {Promise} 请求体
+ */
 function getBody() {
   const req = this;
   return new Promise((resolve) => {
@@ -20,24 +23,75 @@ function getBody() {
   });
 }
 
-function getToken() {
+/**
+ * 挂载到request上，获取post函数的file请求体
+ * @returns {Promise} 请求体
+ */
+function getFiles() {
   const req = this;
-  return req.headers.authorization;
+  return new Promise((resolve, reject) => {
+    const boundary = req.headers['content-type'].split('; ')[1].replace('boundary=', '');
+    let rawData = '';
+    const fields = {};
+    const files = [];
+    
+    req.on('data', chunk => {
+      rawData += chunk;
+    });
+
+    req.on('end', () => {
+      const parts = rawData.split(`--${boundary}`);
+      for (const part of parts) {
+        if (part && part !== '--\r\n') {
+          const [header, ...body] = part.split('\r\n\r\n');
+          const content = body.join('\r\n\r\n').trim();
+          // 有filename的部分是文件名，没有的是普通字段
+          if (header.includes('filename')) {
+            const filename = header.match(/filename="(.+)"/)[1];
+            const mimetype = header.match(/Content-Type: (.+)/)[1];
+            files.push({ filename, mimetype, buffer: Buffer.from(content, 'binary') });
+          } else {
+            const fieldname = header.match(/name="(.+)"/)[1];
+            fields[fieldname] = content;
+          }
+        }
+      }
+
+      resolve({fields, files});
+    });
+
+    req.on('error', err => {
+      reject(err);
+    });
+  });
 }
 
-// 获取客户端的ip
-function getClientIp() {
+/**
+ * 挂载到request上，获取post函数的文件
+ * @returns {Promise} 文件
+ */
+function getToken() {
+  return this?.headers?.authorization;
+}
+
+/**
+ * 获取客户端的ip
+ * @returns {String} ip地址
+ */
+function getClientIp(defaultValue='unknow') {
   const req = this;
   return (
     req.headers['x-forwarded-for'] ||
     req?.connection?.remoteAddress ||
     req?.socket?.remoteAddress ||
-    req?.connection?.socket?.remoteAddress ||
-    'unknow'
+    req?.connection?.socket?.remoteAddress || defaultValue
   );
 }
 
-// 获取请求数据类型
+/**
+ * 获取请求数据类型
+ * @returns {String} 请求数据类型
+ */
 function getContentType() {
   const req = this;
   let url = req.reqUrl;
@@ -45,60 +99,84 @@ function getContentType() {
   return getContentTypeByPath(url);
 }
 
+/**
+ * 获取cookie
+ * @returns {Object} cookie对象
+ */
 function getCookies() {
-  let request = this;
-  var cookies = {};
+  const request = this;
+  const cookies = {};
   if (request.headers.cookie) {
     request.headers.cookie.split(';').forEach(function (cookie) {
       var parts = cookie.match(/(.*?)=(.*)$/);
       cookies[parts[1].trim()] = (parts[2] || '').trim();
     });
   }
+
   return cookies;
 }
 
-// 获取请求的参数
+/**
+ * 获取请求的参数
+ * @returns {Object} 查询参数对象
+ */
 function getQuery() {
-  let request = this;
-  var arg = url.parse(request.url).query;
+  const request = this;
+  const arg = url.parse(request.url).query;
 
   if (!arg) return {};
 
-  var argList = arg.indexOf('&') > -1 ? arg.split('&') : [arg];
-  var args = {};
+  const argList = arg.indexOf('&') > -1 ? arg.split('&') : [arg];
+  const args = {};
   for (each of argList) {
-    var key_value = each.indexOf('=') > -1 ? each.split('=') : false;
-    if (key_value) args[key_value[0]] = key_value[1];
+    const key_value = each.indexOf('=') > -1 ? each.split('=') : false;
+    if (key_value) {
+      args[key_value[0]] = key_value[1];
+    }
   }
 
   return args;
 }
 
+/**
+ * 获取请求路径
+ * @return {String} 请求路径
+ */
 function getReqUrl() {
-  let request = this;
+  const req = this;
   // request里面切出标识符字符串
-  var requestUrl = request.url;
+  const requestUrl = req.url;
   // url模块的parse方法 接受一个字符串，返回一个url对象,切出来路径
-  var pathName = url.parse(requestUrl).pathname;
+  let pathName = url.parse(requestUrl).pathname;
   // 对路径解码，防止中文乱码
-  var pathName = decodeURI(pathName);
+  pathName = decodeURI(pathName);
   // 返回结果
   return pathName == '/' ? '/' : pathName.endsWith('/') ? pathName : pathName + '/';
 }
 
+/**
+ * 获取请求方法
+ * @return {String} 请求方法
+ */
 function getMethod() {
-  const req = this;
-  return req.method;
+  return this.method;
 }
 
+/**
+ * 判断请求方法是否是method
+ * @param {String} method 请求方法
+ * @return {Boolean}
+ */
 function isMethod(method) {
-  const req = this;
-  return req.method === method.toUpperCase();
+  return this.method === method.toUpperCase();
 }
 
+/**
+ * 获取用户信息
+ * @param {String} key 用户信息字段名
+ */
 function getUser(key) {
-  const req = this;
-  const user = req?.ruleResult?.params ?? {};
+  const user = this?.ruleResult?.params ?? {};
   if (!key) {
     return user;
   } else {
@@ -108,6 +186,7 @@ function getUser(key) {
 
 module.exports = {
   getBody,
+  getFiles,
   getToken,
   getClientIp,
   getContentType,
