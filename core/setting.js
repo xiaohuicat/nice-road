@@ -24,6 +24,7 @@ function createStaticPath(staticPath) {
   const TEMPLATES_URL = path.join(staticPath, 'templates');
   const PUBLIC_URL = path.join(staticPath, 'public');
   const PAGES_URL = path.join(staticPath, 'pages');
+  const RESOURCE_URL = path.join(staticPath, 'resources');
   const PRIVATE_PEM_PATH = path.join(staticPath, '/RSA/private_pem.txt');
   const PUBLIC_PEM_PATH = path.join(staticPath, '/RSA/public_pem.txt');
 
@@ -34,6 +35,7 @@ function createStaticPath(staticPath) {
     TEMPLATES_URL,
     PUBLIC_URL,
     PAGES_URL,
+    RESOURCE_URL,
     PRIVATE_PEM_PATH,
     PUBLIC_PEM_PATH
   };
