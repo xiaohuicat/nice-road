@@ -8,9 +8,6 @@ const resTools = require('./tools/resTools');
 const { applySetting } = require('./setting');
 const { rule } = require('./rule');
 
-/**
- * 入口类
- */
 class NiceRoad {
   constructor(setting) {
     this.routers = [];  // 路由列表
@@ -118,8 +115,8 @@ class NiceRoad {
    * @returns {void}
    */
   run(port = 2023, callback = null) {
-    //创建服务器
-    this.httpServer = http.createServer(this.#enter); //进入大门处理请求
+    //创建服务器，并绑定入口
+    this.httpServer = http.createServer((req, res) => this.#enter(req, res));
     this.port = port;
     const defaultFunction = () => {
       console.log(`app is running at port:${port}`);
