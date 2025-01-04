@@ -1,5 +1,3 @@
-const { applySetting } = require('nice-road');
-
 const __DEV__ = true; //是否为开发环境
 const VERSION = '0.0.1';
 const JWT_KEY = 'nice-road-2024';
@@ -22,10 +20,14 @@ const mysqlConfig = {
 //配置静态资源路径
 const staticPath = 'E://static';
 
-applySetting({
+const setting = {
   __DEV__,
   VERSION,
   JWT_KEY,
   mysqlConfig,
   staticPath
-});
+};
+
+module.exports = {
+  setting,
+}

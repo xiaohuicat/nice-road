@@ -5,7 +5,7 @@ const { getContentTypeByPath } = require('../utils');
  * 挂载到request上，获取post函数的body请求体
  * @returns {Promise} 请求体
  */
-function getBody() {
+function getBody(body) {
   const req = this;
   return new Promise((resolve) => {
     let str = '';
@@ -13,12 +13,11 @@ function getBody() {
       str += data;
     });
     req.on('end', function () {
+      body = body ? body : {};
       try {
-        str = JSON.parse(str);
-      } catch {
-        str = {};
-      }
-      resolve(str);
+        Object.assign(body, JSON.parse(str));
+      } catch {}
+      resolve(body);
     });
   });
 }

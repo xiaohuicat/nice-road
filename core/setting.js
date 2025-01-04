@@ -7,6 +7,7 @@ const SETTING = {};
 
 /**
  * 获取配置
+ * @return {Object} 配置对象
  */
 function getSetting() {
   return SETTING;
@@ -14,7 +15,8 @@ function getSetting() {
 
 /**
  * 创建静态文件路径
- * @param {String} staticPath
+ * @param {String} staticPath 静态文件路径
+ * @return {Object} 静态文件路径对象
  */
 function createStaticPath(staticPath) {
   const DB_URL = path.join(staticPath, 'databases');
@@ -39,7 +41,8 @@ function createStaticPath(staticPath) {
 
 /**
  * 创建mysql配置
- * @param {Object} mysql_config
+ * @param {Object} mysql_config mysql配置对象
+ * @return {Object} mysql配置对象
  */
 function createMysqlConfig(mysql_config) {
   if (!isObject(mysql_config)) {
@@ -73,18 +76,16 @@ function createMysqlConfig(mysql_config) {
 }
 
 /**
- * 创建配置
- * @param {Object} setting
+ * 应用到配置
+ * @param {Object} setting 配置参数对象
+ * @return {Object} 配置对象
  */
 function applySetting(setting) {
-  if (!isObject(setting) || !('staticPath' in setting) || !('mysqlConfig' in setting)) {
-    throw new Error('Setting must has staticPath and mysqlConfig.');
+  if (!isObject(setting)) {
+    throw new Error('setting must be an object.');
   }
 
-  const static_config = createStaticPath(setting.staticPath);
-  const MYSQL_CONFIG = createMysqlConfig(setting.mysqlConfig);
-  SETTING.MYSQL_CONFIG = MYSQL_CONFIG;
-
+  // 添加其他配置
   for (const key in setting) {
     if (key === 'mysqlConfig' || key === 'staticPath') {
       continue;
@@ -93,10 +94,21 @@ function applySetting(setting) {
     SETTING[key] = setting[key];
   }
 
-  for (const key in static_config) {
-    SETTING[key] = static_config[key];
+  // 如果存在静态文件路径
+  if ('staticPath' in setting) {
+    const static_config = createStaticPath(setting.staticPath);
+    for (const key in static_config) {
+      SETTING[key] = static_config[key];
+    }
   }
 
+  // 如果存在mysql配置
+  if ('mysqlConfig' in setting) {
+    const MYSQL_CONFIG = createMysqlConfig(setting.mysqlConfig);
+    SETTING.MYSQL_CONFIG = MYSQL_CONFIG;
+  }
+
+  // 如果存在私钥证书路径，则读取私钥
   if (SETTING?.PRIVATE_PEM_PATH && fs.existsSync(SETTING?.PRIVATE_PEM_PATH)) {
     SETTING.PRIVATE_PEM = fs.readFileSync(SETTING?.PRIVATE_PEM_PATH);
   }

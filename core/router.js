@@ -17,17 +17,18 @@ class Router {
       return;
     }
 
+    const setting = getSetting();
+    const __DEV__ = setting?.__DEV__;
     // 没有校验规则
     if (!this.rules) {
       const { status, msg } = await safeRunCallback(this.callback, req, res);
       if (!status) {
-        res.send({ status: false, msg });
+        res.send({ status: false, msg: __DEV__ ? msg : '发生错误！' });
       }
 
       return;
     }
 
-    const setting = getSetting();
     // 验证规则
     const option = {
       token: req.getToken(),
@@ -44,7 +45,7 @@ class Router {
     req.ruleResult = ret;
     const { status, msg } = await safeRunCallback(this.callback, req, res);
     if (!status) {
-      res.send({ status: false, msg });
+      res.send({ status: false, msg: __DEV__ ? msg : '发生错误！' });
     }
   }
 }

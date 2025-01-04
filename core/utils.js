@@ -2,21 +2,28 @@ const fs = require('fs');
 const path = require('path');
 const Redis = require('ioredis');
 
+/**
+ * 判断输入参数是否为null，当值为null或undefined
+ * @param {*} obj 判断参数
+ * @returns {Boolean} 是否为空
+ */
 function isNull(obj) {
   return obj === null || obj === undefined;
 }
 
 /**
- * 判断是否是对象
- * @param {Object} obj
+ * 判断是否是对象，排除null和数组
+ * @param {Object} obj 判断参数
+ * @returns {Boolean} 是否是对象
  */
 function isObject(obj) {
   return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
 }
 
 /**
- * 判断是否是文件
- * @param {String} filePath
+ * 判断是否是文件，检查本地是否存在文件
+ * @param {String} filePath 文件路径
+ * @returns {Boolean} 是否是对象
  */
 function isFile(filePath) {
   try {
@@ -34,9 +41,10 @@ function isFile(filePath) {
 }
 
 /**
- * 添加属性
- * @param {Object} obj
- * @param {Object} tools
+ * 添加属性，将一个对象的属性添加都目标对象
+ * @param {Object} obj 被添加的对象
+ * @param {Object} tools 添加对象
+ * @returns {void}
  */
 function addProperty(obj, tools) {
   if (!obj || !tools) return;
@@ -51,7 +59,8 @@ function addProperty(obj, tools) {
 
 /**
  * 读取文件
- * @param {String} file_path
+ * @param {String} file_path 文件路径
+ * @returns {Promise} 读取数据
  */
 function readFile(file_path) {
   return new Promise((resolve) => {
@@ -106,7 +115,6 @@ const getRouters = async (routerPath) => {
 // 获取请求数据类型
 function getContentTypeByPath(filePath) {
   if (!filePath) return 'unknown';
-  //获取资源文件的绝对路径
   //mime类型
   var mime = {
     css: 'text/css',
@@ -156,7 +164,7 @@ function isPromise(obj) {
 /**
  * 安全运行回调函数
  * @param {Function} callback
- * @param {Object} res
+ * @returns {Promise}
  */
 function safeRunCallback(callback, ...args) {
   return new Promise((resolve) => {
@@ -200,5 +208,5 @@ module.exports = {
   getRouters,
   getContentTypeByPath,
   safeRunCallback,
-  redisEasy
+  redisEasy,
 };

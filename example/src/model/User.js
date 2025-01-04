@@ -18,7 +18,7 @@ var User = useSequelize().define(
     label: Sequelize.JSON,
     birthday: Sequelize.DATEONLY,
     create_at: Sequelize.BIGINT,
-    update_at: Sequelize.BIGINT
+    update_at: Sequelize.BIGINT,
   },
   { timestamps: false, freezeTableName: true }
 );

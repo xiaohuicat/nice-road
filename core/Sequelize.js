@@ -1,11 +1,13 @@
 const Sequelize = require('sequelize');
 const { getSetting } = require('./setting');
 
+// 全局变量
 let sequelize;
 
 /**
  * 创建sequelize
  * @param {Object} 配置参数
+ * @return {Object} sequelize实例
  */
 function useSequelize() {
   if (sequelize) {
@@ -30,6 +32,7 @@ function useSequelize() {
 
 /**
  * 同步数据库
+ * @return {Object} 同步结果
  */
 async function syncSequelize() {
   try {

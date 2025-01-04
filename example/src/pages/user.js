@@ -19,5 +19,5 @@ async function getUserList(req, res) {
 
 module.exports = {
   getUserAvatar,
-  getUserList
+  getUserList,
 };

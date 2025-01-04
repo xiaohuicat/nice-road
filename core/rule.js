@@ -5,7 +5,8 @@ const { isPromise, isAsyncFunction, isNull } = require('./utils');
 
 /**
  * 多条件校验，返回true
- * @param {Array} conditions
+ * @param {Array} conditions 条件数组
+ * @return {fail: false, msg: *} 校验结果
  */
 function multipleValidate(conditions) {
   if (!Array.isArray(conditions)) {
@@ -41,7 +42,8 @@ function multipleValidate(conditions) {
 
 /**
  * 多条件校验，返回true
- * @param {Array} conditions
+ * @param {Array} conditions 条件数组
+ * @return {fail: false, msg: *} 校验结果
  */
 async function asyncMultipleValidate(conditions) {
   if (!Array.isArray(conditions)) {
@@ -81,7 +83,7 @@ async function asyncMultipleValidate(conditions) {
 }
 
 /**
- * 下一个
+ * 校验下一个
  * @param {Array} rules 规则列表
  * @return {fail: false, msg: *}
  */
@@ -99,9 +101,9 @@ function ruleNext(msg, params) {
 }
 
 /**
- * 跳出
- * @param msg
- * @param params
+ * 跳出校验
+ * @param msg 原因
+ * @param params 参数
  * @returns {fail: true, msg: *, params: *}
  */
 function ruleBreak(msg, params) {
@@ -119,8 +121,9 @@ function ruleBreak(msg, params) {
 
 /**
  * rsa解密
- * @param {String} token
- * @param {String} rsa_private_pem
+ * @param {String} token 解密文本
+ * @param {String} rsa_private_pem 私钥
+ * @returns {Object} 校验结果
  */
 function rsaVerify(token, rsa_private_pem) {
   try {
@@ -143,8 +146,9 @@ function rsaVerify(token, rsa_private_pem) {
 
 /**
  * jwt解密
- * @param {String} token
- * @param {String} jwt_key
+ * @param {String} token 解密文本
+ * @param {String} jwt_key jwt密钥
+ * @returns {Object} 校验结果
  */
 function jwtVerify(token, jwt_key = 'jwt') {
   let result = new Token(jwt_key).decrypt(token, 'utf8');
@@ -179,8 +183,9 @@ function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
 
 /**
  * 校验规则
- * @param {Array} rules
- * @param {Object} param
+ * @param {Array} rules 规则列表，在路由中配置的规则，如['GET']
+ * @param {Object} param {token, method, jwt_key, rsa_private_pem}
+ * @return {Object} 校验结果
  */
 function rule(rules, { token, method, jwt_key, rsa_private_pem }) {
   return multipleValidate([
