@@ -1,6 +1,6 @@
 {
   "name": "nice-road",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "create a simple server",
   "main": "core/index.js",
   "scripts": {

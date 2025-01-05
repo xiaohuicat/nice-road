@@ -37,8 +37,9 @@ function sendJson(data) {
  * 发送文件
  * @param {String} filePath
  * @param {Number} statusCode
+ * @param {Boolean} cache 是否开启强制缓存
  */
-function sendStreamFile(filePath, statusCode = 200) {
+function sendStreamFile(filePath, statusCode = 200, cache = true) {
   let response = this;
   // 如果文件不存在
   if (!isFile(filePath)) {
@@ -48,7 +49,11 @@ function sendStreamFile(filePath, statusCode = 200) {
   }
 
   let contentType = getContentTypeByPath(filePath);
-  response.writeHead(statusCode, { 'content-type': contentType });
+  response.writeHead(statusCode, {
+    'content-type': contentType,
+    'Cache-Control': 'public, max-age=31536000, immutable', // 1年缓存
+    'Expires': new Date(Date.now() + 31536000 * 1000).toUTCString(), // 设置缓存过期时间
+  });
   let stream = fs.createReadStream(filePath);
   stream.on('error', function () {
     //错误处理
