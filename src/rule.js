@@ -219,5 +219,5 @@ module.exports = {
   ruleNext,
   ruleBreak,
   jwtVerify,
-  userRSAVerify
+  userRSAVerify,
 };

@@ -8,6 +8,16 @@ const resTools = require('./tools/resTools');
 const { applySetting } = require('./setting');
 const { rule } = require('./rule');
 
+function getIndex(urls, reqUrl) {
+  for (let i = 0; i < urls.length; i++) {
+    if (urls[i].endsWith('*') ? reqUrl.startsWith(urls[i]) : reqUrl === urls[i]) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 class NiceRoad {
   constructor(setting) {
     this.routers = [];  // 路由列表
@@ -68,7 +78,7 @@ class NiceRoad {
     req.getReqUrl = getReqUrl;
     const reqUrl = req.getReqUrl();
 
-    let index = this.urls.indexOf(reqUrl);
+    let index = getIndex(this.urls, reqUrl);
     if (index == -1) {
       res.send = send;
       res.send({ status: false, msg: 'url not found' });

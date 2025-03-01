@@ -3,7 +3,7 @@ const { build } = require('esbuild')
 const { nodeExternalsPlugin } = require('esbuild-node-externals')
 
 build({
-  entryPoints: ['./core/index.js'],
+  entryPoints: ['./src/index.js'],
   outfile: './dist/nice-road.js',
   bundle: true,
   platform: 'node',
@@ -12,4 +12,4 @@ build({
   plugins: [
     nodeExternalsPlugin(),
   ],
-}).catch(() => process.exit(1))
+}).catch(() => process.exit(1));

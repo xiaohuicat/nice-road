@@ -10,6 +10,7 @@ class Router {
     this.callback = callback;
     this.rules = rules;
   }
+
   async run(req, res, rule) {
     // 错误的路由
     if (!this.url || !this.callback) {
@@ -36,6 +37,7 @@ class Router {
       jwt_key: setting?.JWT_KEY,
       rsa_private_pem: setting?.PRIVATE_PEM,
     };
+
     let ret = await rule(this.rules, option);
     if (ret?.fail) {
       res.send({ status: false, msg: ret?.msg || 'verify error' });
@@ -51,22 +53,17 @@ class Router {
 }
 
 /**
- * 路由配置
- * @param {string} url 路由地址
- * @param {function} callback 路由回调函数
- * @param {object} rules 校验规则
+ * 创建路由对象
+ * @param {String} url 路径
+ * @param {Function} callback 回调函数
+ * @param {Array} rules 权限规则
+ * @returns {Router}
  */
 function npath(url, callback, rules) {
-  if (typeof url === 'string' && typeof callback === 'function') {
-    return new Router(url, callback, rules);
-  } else if (typeof url === 'object' && typeof callback === 'undefined') {
-    return new Router(url?.url, url?.callback, url?.rules);
-  } else {
-    console.error(`[warning]错误的路由配置`);
-  }
+  return new Router(url, callback, rules);
 }
 
 module.exports = {
+  Router,
   npath,
-  Router
 };

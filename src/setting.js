@@ -122,5 +122,5 @@ module.exports = {
   createStaticPath,
   createMysqlConfig,
   getSetting,
-  applySetting
+  applySetting,
 };

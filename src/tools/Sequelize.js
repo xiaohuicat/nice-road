@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { getSetting } = require('./setting');
+const { getSetting } = require('../setting');
 
 // 全局变量
 let sequelize;

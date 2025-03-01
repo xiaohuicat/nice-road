@@ -1,6 +1,6 @@
 const { NiceRoad } = require('./NiceRoad');
-const { npath, Router } = require('./router');
-const { useSequelize, syncSequelize, Sequelize, DataTypes, Op } = require('./Sequelize');
+const { npath } = require('./router');
+const { useSequelize, syncSequelize, Sequelize, DataTypes, Op } = require('./tools/Sequelize');
 const { reqTools } = require('./tools/reqTools');
 const { resTools } = require('./tools/resTools');
 const httpTools = require('./tools');
@@ -18,7 +18,6 @@ const { applySetting, getSetting } = require('./setting');
 
 module.exports = {
   NiceRoad,
-  Router,
   npath,
   reqTools,
   resTools,
