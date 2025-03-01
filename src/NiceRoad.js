@@ -10,7 +10,7 @@ const { rule } = require('./rule');
 
 function getIndex(urls, reqUrl) {
   for (let i = 0; i < urls.length; i++) {
-    if (urls[i].endsWith('*') ? reqUrl.startsWith(urls[i]) : reqUrl === urls[i]) {
+    if (urls[i].endsWith('*') ? reqUrl.startsWith(urls[i].replace('*', '')) : reqUrl === urls[i]) {
       return i;
     }
   }
