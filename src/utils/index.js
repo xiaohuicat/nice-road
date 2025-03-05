@@ -113,9 +113,9 @@ const getRouters = async (routerPath) => {
 };
 
 // 获取请求数据类型
-function getContentTypeByPath(filePath) {
+function getContentTypeByPath(filePath, defaultValue='text/plain') {
   if (!filePath) return 'unknown';
-  //mime类型
+  // mime类型
   var mime = {
     css: 'text/css',
     gif: 'image/gif',
@@ -138,7 +138,7 @@ function getContentTypeByPath(filePath) {
   };
   var ext = path.extname(filePath);
   ext = ext ? ext.slice(1) : 'unknown';
-  var contentType = mime[ext] || 'text/plain';
+  var contentType = mime[ext] ?? defaultValue;
   return contentType;
 }
 

@@ -149,8 +149,13 @@ function getReqUrl() {
   let pathName = url.parse(requestUrl).pathname;
   // 对路径解码，防止中文乱码
   pathName = decodeURI(pathName);
+  // 如果访问的是文件
+  if (getContentTypeByPath(pathName, 'error') !== 'error') {
+    return pathName;
+  }
+
   // 返回结果
-  return pathName == '/' ? '/' : pathName.endsWith('/') ? pathName : pathName + '/';
+  return pathName.endsWith('/') ? pathName : pathName + '/';
 }
 
 /**

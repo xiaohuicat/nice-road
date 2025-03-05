@@ -65,11 +65,16 @@ class NiceRoad {
     this.routers = await getRouters(routerPath);
     this.urls = [];
     this.routers.forEach((each) => {
-      if (!each) {
+      if (!each || !each.url) {
         return;
       }
 
-      const url = each.url === '/' ? '/' : each.url.endsWith('/') ? each.url : each.url + '/';
+      if (each.url.endsWith('*')) {
+        this.urls.push(each.url);
+        return;
+      }
+
+      const url = each.url.endsWith('/') ? each.url : each.url + '/';
       this.urls.push(url);
     });
   };
