@@ -28,7 +28,7 @@ function rule(rules, option) {
     [rules.includes('GET') && option.method !== 'GET', '请求方法错误'],
     [rules.includes('POST') && option.method !== 'POST', '请求方法错误'],
     () => {
-      if (rules.includes('user')) {
+      if (rules.includes('USER')) {
         // 执行用户校验， 如果失败，则返回 ruleBreak('用户校验失败')
         return ruleBreak('用户校验失败');
       }
@@ -86,7 +86,7 @@ const urls = [
   // 不设置规则，则使用全局规则
   npath('/getUserAvatar', getUserAvatar),
   // 使用设置的规则
-  npath('/getUserList', getUserList, ['POST', 'user'])
+  npath('/getUserList', getUserList, ['POST', 'USER'])
 ];
 
 module.exports = {

@@ -1,6 +1,5 @@
 const { getSetting } = require('./setting');
 const { safeRunCallback } = require('./utils');
-const SETTING = getSetting();
 
 /**
  * 路由类
@@ -19,6 +18,7 @@ class Router {
       return;
     }
 
+    const SETTING = getSetting();
     const __DEV__ = SETTING?.__DEV__;
     // 没有校验规则
     if (!this.rules) {
@@ -60,6 +60,7 @@ class Router {
  * @returns {Router}
  */
 function npath(url, callback, rules) {
+  const SETTING = getSetting();
   return new Router((SETTING.url_prefix ?? '') + url, callback, rules);
 }
 
