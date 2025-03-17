@@ -61,7 +61,15 @@ class Router {
  */
 function npath(url, callback, rules) {
   const SETTING = getSetting();
-  return new Router((SETTING.url_prefix ?? '') + url, callback, rules);
+  if (url.startsWith('[hard]')) {
+    const newUrl = url.replace('[hard]', '');
+    if (SETTING?.__DEV__) console.log(`[info]注册路由：${newUrl}`);
+    return new Router(newUrl, callback, rules);
+  }
+  
+  const newUrl = SETTING?.URL_PREFIX + url;
+  if (SETTING?.__DEV__) console.log(`[info]注册路由：${newUrl}`);
+  return new Router(newUrl, callback, rules);
 }
 
 module.exports = {
