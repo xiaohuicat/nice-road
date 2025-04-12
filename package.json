@@ -4,7 +4,6 @@
   "description": "create a simple server",
   "main": "src/index.js",
   "scripts": {
-    "dev": "node main.js",
     "build": "node build.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write core/ example/ --ignore node_modules/"
