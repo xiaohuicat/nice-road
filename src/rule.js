@@ -130,8 +130,9 @@ function rsaVerify(token, rsa_private_pem) {
     let front = token.slice(0, 344);
     let rest = token.slice(344, 1024);
     let aesKey_timestamp = rsa_decrypt(rsa_private_pem, front);
-    let aesKey = aesKey_timestamp.slice(0, 16);
-    let timestamp = aesKey_timestamp.slice(16, 100);
+    let timestamp = aesKey_timestamp.slice(-13);
+    let aesKey = aesKey_timestamp.slice(0, -13);
+    
     let t = Date.now() - timestamp;
     if (t > 1000 * 30) {
       return false;

@@ -18,8 +18,7 @@ class Router {
       return;
     }
 
-    const SETTING = getSetting();
-    const __DEV__ = SETTING?.__DEV__;
+    const {__DEV__, JWT_KEY, PRIVATE_PEM} = getSetting();
     // 没有校验规则
     if (!this.rules) {
       const { status, msg } = await safeRunCallback(this.callback, req, res);
@@ -34,8 +33,8 @@ class Router {
     const option = {
       token: req.getToken(),
       method: req.getMethod(),
-      jwt_key: setting?.JWT_KEY,
-      rsa_private_pem: setting?.PRIVATE_PEM,
+      jwt_key: JWT_KEY,
+      rsa_private_pem: PRIVATE_PEM,
     };
 
     let ret = await rule(this.rules, option);
@@ -60,15 +59,15 @@ class Router {
  * @returns {Router}
  */
 function npath(url, callback, rules) {
-  const SETTING = getSetting();
+  const {__DEV__, URL_PREFIX} = getSetting();
   if (url.startsWith('[hard]')) {
     const newUrl = url.replace('[hard]', '');
-    if (SETTING?.__DEV__) console.log(`[info]注册路由：${newUrl}`);
+    if (__DEV__) console.log(`[info]注册路由：${newUrl}`);
     return new Router(newUrl, callback, rules);
   }
   
-  const newUrl = SETTING?.URL_PREFIX + url;
-  if (SETTING?.__DEV__) console.log(`[info]注册路由：${newUrl}`);
+  const newUrl = URL_PREFIX + url;
+  if (__DEV__) console.log(`[info]注册路由：${newUrl}`);
   return new Router(newUrl, callback, rules);
 }
 
