@@ -172,7 +172,7 @@ function userRSAVerify(token, jwt_key = 'jwt', rsa_private_pem) {
 
       return ruleNext('无需rsa解密', token);
     },
-    getToken => jwtVerify(getToken.replace('[no-rsa]', ''), jwt_key)
+    getToken => jwtVerify(getToken?.replace('[no-rsa]', ''), jwt_key)
   ]);
 
   if (fail) {
