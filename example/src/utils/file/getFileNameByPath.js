@@ -4,5 +4,5 @@ function getFileNameByPath(path) {
   return fileName;
 }
 module.exports = {
-  getFileNameByPath
+  getFileNameByPath,
 };

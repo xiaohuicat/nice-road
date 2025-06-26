@@ -11,7 +11,7 @@ function aes_encrypt(message, key) {
   var messageBytes = cryptoJS.enc.Utf8.parse(message);
   var decrypted = cryptoJS.AES.encrypt(messageBytes, keyBytes, {
     mode: cryptoJS.mode.ECB,
-    padding: cryptoJS.pad.Pkcs7
+    padding: cryptoJS.pad.Pkcs7,
   });
   return decrypted.toString();
 }
@@ -21,7 +21,7 @@ function aes_decrypt(message, key) {
   var keyBytes = cryptoJS.enc.Utf8.parse(key);
   var decrypted = cryptoJS.AES.decrypt(message, keyBytes, {
     mode: cryptoJS.mode.ECB,
-    padding: cryptoJS.pad.Pkcs7
+    padding: cryptoJS.pad.Pkcs7,
   });
   return cryptoJS.enc.Utf8.stringify(decrypted).toString();
 }
@@ -29,5 +29,5 @@ function aes_decrypt(message, key) {
 module.exports = {
   aes_generate_key,
   aes_encrypt,
-  aes_decrypt
+  aes_decrypt,
 };

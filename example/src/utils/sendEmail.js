@@ -16,8 +16,8 @@ function sendEmail({ to, subject, text, html }) {
       service: 'qq', // 使用Gmail服务
       auth: {
         user: '**********@qq.com', // 发件人的电子邮件地址
-        pass: '******' // 发件人的电子邮件密码或应用程序令牌
-      }
+        pass: '******', // 发件人的电子邮件密码或应用程序令牌
+      },
     });
     // 邮件选项
     let mailOptions = {
@@ -25,7 +25,7 @@ function sendEmail({ to, subject, text, html }) {
       to, // 收件人的电子邮件地址
       subject, // 邮件主题
       text, // 邮件正文
-      html //邮件html
+      html, //邮件html
     };
 
     // 发送邮件
@@ -40,5 +40,5 @@ function sendEmail({ to, subject, text, html }) {
 }
 
 module.exports = {
-  sendEmail
+  sendEmail,
 };

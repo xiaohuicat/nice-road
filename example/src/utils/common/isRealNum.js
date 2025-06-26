@@ -13,5 +13,5 @@ function isRealNum(val) {
   }
 }
 module.exports = {
-  isRealNum
+  isRealNum,
 };

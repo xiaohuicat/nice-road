@@ -8,5 +8,5 @@ function randomString(e) {
 }
 
 module.exports = {
-  randomString
+  randomString,
 };

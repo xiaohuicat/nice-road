@@ -13,8 +13,8 @@ const mysqlConfig = {
   pool: {
     max: 5,
     min: 0,
-    idle: 30000
-  }
+    idle: 30000,
+  },
 };
 
 //配置静态资源路径
@@ -25,9 +25,9 @@ const setting = {
   VERSION,
   JWT_KEY,
   mysqlConfig,
-  staticPath
+  staticPath,
 };
 
 module.exports = {
   setting,
-}
+};

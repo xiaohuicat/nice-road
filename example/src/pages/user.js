@@ -9,7 +9,7 @@ async function getUserAvatar(req, res) {
 async function getUserList(req, res) {
   try {
     const data = await User.findAll({
-      attributes: ['id', 'user_id', 'name', 'gender', 'email']
+      attributes: ['id', 'user_id', 'name', 'gender', 'email'],
     });
     res.send({ status: true, data });
   } catch (err) {

@@ -18,5 +18,5 @@ function verifyPassword(plainPassword, hash) {
 
 module.exports = {
   generatePassword,
-  verifyPassword
+  verifyPassword,
 };

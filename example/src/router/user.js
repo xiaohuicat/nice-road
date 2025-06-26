@@ -5,10 +5,10 @@ const user = require('../pages/user');
 const rules = null;
 const urls = [
   npath('/getUserAvatar', user.getUserAvatar, ['GET']),
-  npath('/getUserList', user.getUserList, ['no', 'POST', 'user'])
+  npath('/getUserList', user.getUserList, ['no', 'POST', 'user']),
 ];
 
 module.exports = {
   urls,
-  rules
+  rules,
 };

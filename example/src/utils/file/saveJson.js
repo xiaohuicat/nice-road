@@ -37,5 +37,5 @@ function saveUserJson(email, name, data) {
 
 module.exports = {
   saveJson,
-  saveUserJson
+  saveUserJson,
 };

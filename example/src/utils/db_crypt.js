@@ -29,5 +29,5 @@ function try_decrypt(obj, attr, rsa_aes_key, rsa_private_pem) {
 module.exports = {
   db_decrypt,
   try_decrypt_payload,
-  try_decrypt
+  try_decrypt,
 };

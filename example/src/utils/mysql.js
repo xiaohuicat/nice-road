@@ -3,7 +3,7 @@ var db = mysql.createConnection({
   host: '127.0.0.1',
   port: 3360,
   user: 'root',
-  password: '**********'
+  password: '**********',
 });
 
 db.connect();
@@ -15,7 +15,7 @@ db.query(
     if (error) throw error;
     console.log('创建数据库');
     console.log(results);
-  }
+  },
 );
 
 db.query('use nice_app;');
@@ -37,7 +37,7 @@ db.query(
   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`,
   function (error, results, fields) {
     if (error) throw error;
-  }
+  },
 );
 
 db.end();

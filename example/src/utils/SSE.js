@@ -37,7 +37,7 @@ class SseServer {
     this.sseConnections.forEach((meta) => {
       const [sse, req, res] = meta;
       const message = {
-        data
+        data,
       };
       meta[0].write(message);
     });

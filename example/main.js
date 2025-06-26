@@ -24,6 +24,6 @@ function rule(rules, option) {
       }
 
       return ruleNext('验证通过');
-    }
+    },
   ]);
 }

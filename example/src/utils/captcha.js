@@ -9,7 +9,7 @@ var codeConfig = {
   fontSize: 36,
   color: true,
   background: '#fff',
-  url: '/captcha.png'
+  url: '/captcha.png',
 };
 function captcha() {
   backgroundList = ['#CCEEFF', '#CCCCFF', '#D1BBFF', '#99FFFF', '#CCFF99'];
@@ -17,5 +17,5 @@ function captcha() {
   return svgCaptcha.create(codeConfig);
 }
 module.exports = {
-  captcha
+  captcha,
 };

@@ -58,5 +58,5 @@ module.exports = {
   db_time,
   db_time_raw,
   dateTimeZone8,
-  secondToDate
+  secondToDate,
 };
